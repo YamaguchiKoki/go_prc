@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/YamaguchiKoki/myapi/handlers"
+	"github.com/YamaguchiKoki/go_prc/handlers"
 )
 
 func main() {
