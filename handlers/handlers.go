@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"strconv"
 
+	"github.com/YamaguchiKoki/go_prc/models"
 	"github.com/gorilla/mux"
 )
 
@@ -13,9 +15,18 @@ import (
 func HelloHandler(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, "Hello, world!\n")
 }
-// /article のハンドラ
+// POST /article のハンドラ
 func PostArticleHandler(w http.ResponseWriter, req *http.Request) {
-	io.WriteString(w, "Posting Article...\n")
+	var reqArticle models.Article
+
+	//req.Body はストリーム
+	if err := json.NewDecoder((req.Body)).Decode(&reqArticle); err != nil {
+		http.Error(w, "fail to decode json\n", http.StatusBadRequest)
+	}
+
+	article := reqArticle
+
+	json.NewEncoder(w).Encode(article)
 }
 // /article/list のハンドラ
 func ArticleListHandler(w http.ResponseWriter, req *http.Request) {
