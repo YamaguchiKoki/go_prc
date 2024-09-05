@@ -1,22 +1,30 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 
-	"github.com/YamaguchiKoki/go_prc/handlers"
-	"github.com/gorilla/mux"
+	"github.com/YamaguchiKoki/go_prc/api"
+)
+
+var (
+	dbUser = "docker"
+	dbPassword = "docker"
+	dbDatabase = "sampledb"
+	dbHost = "db"
+	dbConn = fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?parseTime=true", dbUser, dbPassword, dbHost, dbDatabase)
 )
 
 func main() {
-	r := mux.NewRouter()
+	db, err := sql.Open("mysql", dbConn)
+	if err != nil {
+		log.Println("failed to connect db")
+		return
+	}
 
-	r.HandleFunc("/article", handlers.PostArticleHandler).Methods(http.MethodPost)
-	r.HandleFunc("/article/list", handlers.ArticleListHandler).Methods(http.MethodGet)
-
-	r.HandleFunc("/article/{id:[0-9]+}", handlers.ArticleDetailHandler).Methods(http.MethodGet)
-	r.HandleFunc("/article/nice", handlers.PostNiceHandler).Methods(http.MethodPost)
-	r.HandleFunc("/comment", handlers.PostCommentHandler).Methods(http.MethodPost)
+	r := api.NewRouter(db)
 
 	log.Println("server start at port 8080")
 

@@ -35,7 +35,7 @@ func InsertArticle(db *sql.DB, article models.Article) (models.Article, error) {
 //list取得
 func SelectArticleList(db *sql.DB, page int) ([]models.Article, error) {
 	const sqlStr = `
-		select article_id, title, contents, username, nice
+		select article_id, title, contents, user_name, nice
 		from articles
 		limit ? offset ?;
 	`
