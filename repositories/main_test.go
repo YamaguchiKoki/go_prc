@@ -16,7 +16,7 @@ func setup() error {
 	dbUser := "docker"
 	dbPassword := "docker"
 	dbDatabase := "sampledb"
-	dbHost := "db" // MySQLコンテナのサービス名
+	dbHost := "db"
 
 	// DB接続情報のフォーマット
 	dbConn := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?parseTime=true", dbUser, dbPassword, dbHost, dbDatabase)
